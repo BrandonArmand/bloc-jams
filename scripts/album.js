@@ -13,7 +13,7 @@ var albumPicasso = {
      ]
  };
 
- var albumMarconi = {
+var albumMarconi = {
      title: 'The Telephone',
      artist: 'Guglielmo Marconi',
      label: 'EM',
@@ -28,7 +28,22 @@ var albumPicasso = {
      ]
  };
 
- var createSongRow = function(songNumber, songName, songLength){
+var albumAlbum = {
+     title: 'The Album',
+     artist: 'John Doe',
+     label: 'DEE',
+     year: '2012',
+     albumArtUrl: 'https://static.brusheezy.com/system/resources/previews/000/014/226/non_2x/abstract-art-brushes.jpg',
+     songs: [
+         { title: 'Hello, John?', duration: '1:01' },
+         { title: 'Ring, a, ding, ding', duration: '5:01' },
+         { title: 'Fits in your locket', duration: '3:21'},
+         { title: 'Can you see me now?', duration: '3:14' },
+         { title: 'Wrong place', duration: '2:15'}
+     ]
+ };
+
+var createSongRow = function(songNumber, songName, songLength){
    var template =
       '<tr class = "album-view-song-item">'
     + ' <td class="song-item-number">' + songNumber + '</td>'
@@ -37,27 +52,38 @@ var albumPicasso = {
     + '</tr>'
     ;
     return template;
- }
+ };
 
- var setCurrentAlbum = function(album) {
-      var albumTitle = document.getElementsByClassName('album-view-title')[0];
-      var albumArtist = document.getElementsByClassName('album-view-artist')[0];
-      var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
-      var albumImage = document.getElementsByClassName('album-cover-art')[0];
-      var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+ var albumTitle = document.getElementsByClassName('album-view-title')[0];
+ var albumArtist = document.getElementsByClassName('album-view-artist')[0];
+ var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
+ var albumImage = document.getElementsByClassName('album-cover-art')[0];
+ var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
 
-      albumTitle.firstChild.nodeValue = album.title;
-      albumArtist.firstChild.nodeValue = album.artist;
-      albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
-      albumImage.setAttribute('src', album.albumArtUrl);
 
-      albumSongList.innerHTML = '';
+var setCurrentAlbum = function(album) {
 
-      for (var i = 0; i < album.songs.length; i++) {
+    albumTitle.firstChild.nodeValue = album.title;
+    albumArtist.firstChild.nodeValue = album.artist;
+    albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
+    albumImage.setAttribute('src', album.albumArtUrl);
+
+    albumSongList.innerHTML = '';
+
+    for (var i = 0; i < album.songs.length; i++) {
           albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
       }
   };
 
-  window.onload = function() {
-      setCurrentAlbum(albumPicasso);
+window.onload = function() {
+    setCurrentAlbum(albumPicasso);
+    var allAlbums = [albumPicasso, albumMarconi, albumAlbum];
+    var i = 1;
+    albumImage.addEventListener("click", function(event){
+      setCurrentAlbum(allAlbums[i]);
+      i++;
+      if(i == allAlbums.length){
+        i = 0;
+      }
+    });
   };
