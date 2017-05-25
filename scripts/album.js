@@ -33,7 +33,7 @@ var createSongRow = function(songNumber, songName, songLength){
       '<tr class = "album-view-song-item">'
     + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'
     + ' <td class="song-item-title">' + songName + '</td>'
-    + ' <td class="song-item-duration">' + songLength + '</td>'
+    + ' <td class="song-item-duration">' + filterTimeCode(songLength) + '</td>'
     + '</tr>'
     ;
 
@@ -118,17 +118,43 @@ var setCurrentAlbum = function(album) {
     }
 };
 
+var setCurrentTimeInPlayerBar = function(currentTime) {
+  var $currentTime = $('.seek-control .current-time');
+  $currentTime.text(currentTime);
+};
+
+var setTotalTimeInPlayerBar = function(totalTime) {
+  var $totalTime = $('.seek-control .total-time');
+  $totalTime.text(totalTime);
+};
+
+var filterTimeCode = function(timeInSeconds) {
+  var seconds = Number.parseFloat(timeInSeconds);
+  var wholeSeconds = Math.floor(seconds);
+  var minutes = Math.floor(wholeSeconds / 60);
+  var remainingTime = wholeSeconds % 60;
+  var output = minutes + ':';
+
+  if (remainingTime < 10) {
+    output += '0';
+  }
+
+  output += remainingTime;
+  return output;
+};
+
 var updateSeekBarWhileSongPlays = function() {
-   if (currentSoundFile) {
-       currentSoundFile.bind('timeupdate', function(event) {
-
-           var seekBarFillRatio = this.getTime() / this.getDuration();
-           var $seekBar = $('.seek-control .seek-bar');
-
-           updateSeekPercentage($seekBar, seekBarFillRatio);
-       });
-   }
- };
+    if (currentSoundFile) {
+        currentSoundFile.bind('timeupdate', function(event) {
+            var currentTime = this.getTime();
+            var songLength = this.getDuration();
+            var seekBarFillRatio = currentTime / songLength;
+            var $seekBar = $('.seek-control .seek-bar');
+            updateSeekPercentage($seekBar, seekBarFillRatio);
+            setCurrentTimeInPlayerBar(filterTimeCode(currentTime));
+        });
+    }
+};
 
 var updateSeekPercentage = function($seekBar, seekBarFillRatio) {
    var offsetXPercent = seekBarFillRatio * 100;
@@ -239,6 +265,7 @@ var updatePlayerBarSong = function(){
   $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
 
   $(".main-controls .play-pause").html(playerBarPauseButton);
+  setTotalTimeInPlayerBar(filterTimeCode(currentSongFromAlbum.length));
 };
 
 var togglePlayFromPlayerBar = function(){
