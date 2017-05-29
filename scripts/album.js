@@ -87,7 +87,6 @@ var createSongRow = function(songNumber, songName, songLength){
     var offHover = function(event){
       var songNumberCell = $(this).find('.song-item-number');
       var songNumber = parseInt(songNumberCell.attr('data-song-number'));
-      console.log("songNumber type is " + typeof songNumber + "\n and setSong type is " + typeof setSong);
 
       if (songNumber !== currentlyPlayingSongNumber) {
         songNumberCell.html(songNumber);
@@ -175,6 +174,9 @@ var trackIndex = function(album, song){
 
 var setupSeekBars = function() {
   var $seekBars = $('.player-bar .seek-bar');
+  setCurrentTimeInPlayerBar(null);
+  setTotalTimeInPlayerBar(null);
+  updateSeekPercentage($seekBars, 0);
 
   $seekBars.click(function(event) {
 
