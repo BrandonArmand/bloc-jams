@@ -1,14 +1,14 @@
 var buildCollectionItemTemplate = function(){
     var template =
       '  <div class="collection-album-container column fourth">'
-    + '    <img src="assets/images/album_covers/01.png"/>'
+    + '    <img src="assets/images/album_covers/01.jpg"/>'
     + '    <div class="collection-album-info caption">'
     + '      <p>'
-    + '        <a class="album-name" href="album.html"> The Colors </a>'
+    + '        <a class="album-name" href="album.html"> Rios\'s Sick Ass Party </a>'
     + '        <br/>'
-    + '        <a href="album.html"> Pablo Picasso </a>'
+    + '        <a href="album.html"> Sick AF </a>'
     + '        <br/>'
-    + '        X songs'
+    + '        1 song(s)'
     + '        <br/>'
     + '      </p>'
     + '  </div>';
@@ -19,7 +19,7 @@ var buildCollectionItemTemplate = function(){
 $(window).load(function(){
   var $collectionContainer = $('.album-covers');
   $collectionContainer.empty();
-  for(var i = 0; i < 12; i++){
+  for(var i = 0; i < 1; i++){
     var $newThumbnail = buildCollectionItemTemplate();
     $collectionContainer.append($newThumbnail);
   }
